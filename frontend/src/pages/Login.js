@@ -12,7 +12,7 @@ function Login() {
     try {
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       alert("Invalid credentials");
     }
