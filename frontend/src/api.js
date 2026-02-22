@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // your backend URL
+  baseURL: "/api", // nginx will proxy this to backend-service:5000
 });
 
 // Add token to requests if logged in
