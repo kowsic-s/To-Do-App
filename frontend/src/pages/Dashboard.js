@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 import TodoForm from "../components/TodoForm";
+import "../App.css";
 
 function Dashboard() {
   const [todos, setTodos] = useState([]);
@@ -123,55 +124,83 @@ function Dashboard() {
   }, []);
 
   return (
-    <div>
-      <h2>My Todos</h2>
-      <button onClick={handleLogout}>Logout</button>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h2>My Todos</h2>
+        <button className="btn btn-secondary btn-small" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
 
-      {/* Todo Form */}
-      <TodoForm onAdd={handleAdd} />
+      <div className="dashboard-content">
+        <div className="glass-card">
+          <TodoForm onAdd={handleAdd} />
 
-      {/* Todo List */}
-      <ul>
-        {todos.map((t) => (
-          <li key={t._id}>
-            {editId === t._id ? (
-              <>
-                <input
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                />
-                <button onClick={handleUpdate}>Save</button>
-                <button onClick={() => setEditId(null)}>Cancel</button>
-              </>
-            ) : (
-              <>
-                <span
-                  style={{
-                    textDecoration: t.completed ? "line-through" : "none",
-                  }}
-                >
-                  {t.text}
-                </span>
-                <button onClick={() => startEdit(t)}>Edit</button>
-                <button onClick={() => handleDelete(t._id)}>Delete</button>
-                <button onClick={() => toggleDone(t._id)}>
-                  {t.completed ? "Undo" : "Done"}
-                </button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+          {todos.length === 0 ? (
+            <div className="empty-state">
+              No todos yet. Add one above!
+            </div>
+          ) : (
+            <ul className="todo-list">
+              {todos.map((t) => (
+                <li className="todo-item" key={t._id}>
+                  {editId === t._id ? (
+                    <>
+                      <input
+                        className="todo-edit-input"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                      />
+                      <div className="todo-actions">
+                        <button className="btn btn-success btn-small" onClick={handleUpdate}>
+                          Save
+                        </button>
+                        <button className="btn btn-secondary btn-small" onClick={() => setEditId(null)}>
+                          Cancel
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className={`todo-text ${t.completed ? 'completed' : ''}`}>
+                        {t.text}
+                      </span>
+                      <div className="todo-actions">
+                        <button className="btn btn-secondary btn-small" onClick={() => startEdit(t)}>
+                          Edit
+                        </button>
+                        <button className="btn btn-danger btn-small" onClick={() => handleDelete(t._id)}>
+                          Delete
+                        </button>
+                        <button 
+                          className={`btn btn-small ${t.completed ? 'btn-secondary' : 'btn-success'}`}
+                          onClick={() => toggleDone(t._id)}
+                        >
+                          {t.completed ? "Undo" : "Done"}
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
 
-      {/* Download Section */}
-      <div>
-        <h3>Download Day-wise Todos</h3>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <button onClick={handleDownload}>Download CSV</button>
+          <div className="download-section">
+            <h3>Download Day-wise Todos</h3>
+            <div className="download-form">
+              <input
+                className="date-input"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <button className="btn btn-primary btn-small" onClick={handleDownload}>
+                Download CSV
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

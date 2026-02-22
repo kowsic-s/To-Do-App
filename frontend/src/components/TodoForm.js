@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../App.css";
 
 function TodoForm({ onAdd }) {
   const [text, setText] = useState("");
@@ -9,19 +10,20 @@ function TodoForm({ onAdd }) {
       alert("Todo cannot be empty");
       return;
     }
-    onAdd(text); // call parent (Dashboard)
-    setText(""); // reset input
+    onAdd(text);
+    setText("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="todo-form" onSubmit={handleSubmit}>
       <input
+        className="glass-input"
         type="text"
-        placeholder="Enter new todo"
+        placeholder="What needs to be done?"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button type="submit">Add</button>
+      <button className="btn btn-primary" type="submit">Add</button>
     </form>
   );
 }
